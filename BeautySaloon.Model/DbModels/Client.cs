@@ -4,6 +4,7 @@ namespace BeautySaloon.Model.DbModels
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
 
     [Table("Client")]
     public partial class Client
@@ -11,8 +12,8 @@ namespace BeautySaloon.Model.DbModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Client()
         {
-            ClientServices = new HashSet<ClientService>();
-            Tags = new HashSet<Tag>();
+            //ClientServices = new HashSet<ClientService>();
+            //Tags = new HashSet<Tag>();
         }
 
         public int ID { get; set; }
@@ -60,12 +61,44 @@ namespace BeautySaloon.Model.DbModels
         [StringLength(1000)]
         public string PhotoPath { get; set; }
 
-        public virtual Gender Gender { get; set; }
+        public Gender Gender { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ClientService> ClientServices { get; set; }
+        public List<ClientService> ClientServices { get; set; } = new List<ClientService>();
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tag> Tags { get; set; }
+        public List<Tag> Tags { get; set; } = new List<Tag>();
+
+        public ClientService LastClientService
+        {
+            get
+            {
+                if (!ClientServices.Any())
+                {
+                    return null;
+                }
+
+                return ClientServices
+                    .OrderBy(x => x.StartTime)
+                    .Last();
+            }
+        }
+
+        public DateTime LastVisitDate => LastClientService?.StartTime ?? default;
+
+        public string LastVisitDateString
+        {
+            get
+            {
+                if (!ClientServices.Any() || LastClientService == null || LastClientService.StartTime == default)
+                {
+                    return "нет";
+                }
+
+                return LastClientService.StartTime.ToString("dd.MM.yyyy");
+            }
+        }
+
+        public int VisitsCount => ClientServices.Count;
     }
 }

@@ -19,6 +19,22 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
 {
     public class ClientsPageViewModel : BaseViewModel
     {
+        public RelayCommand ChangeSortCommand => new RelayCommand(o =>
+        {
+            var button = (Button)o;
+            var tag = button.Tag;
+            ClientsView.SortDescriptions.Clear();
+            ClientsView.SortDescriptions.Add(tag switch
+            {
+                "LastName" => new SortDescription("LastName", ListSortDirection.Ascending),
+                "LastVisitDate" => new SortDescription("LastVisitDate", ListSortDirection.Descending),
+                "VisitsCount" => new SortDescription("VisitsCount", ListSortDirection.Descending),
+                _ => throw new Exception($"ChangeSortCommand: {tag}")
+            });
+
+            UpdateData();
+        });
+
         public RelayCommand PreviousPageCommand => new RelayCommand(o =>
         {
             CurrentPage--;
@@ -51,20 +67,20 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
 
             CurrentPage = 1;
-            PagesCount = Convert.ToInt32(Math.Ceiling((double) TotalItemsCount / OnePageItemsCount));
+            PagesCount = Convert.ToInt32(Math.Ceiling((double)TotalItemsCount / OnePageItemsCount));
             UpdateData();
         });
 
         private int CurrentPageFirstItemIndex => (CurrentPage - 1) * OnePageItemsCount;
 
-        public int CurrentPage 
-        { 
-            get => _currentPage; 
-            set 
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
             {
                 _currentPage = value;
                 OnPropertyChanged();
-            } 
+            }
         }
 
         public int PagesCount
@@ -222,34 +238,38 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                             (GenderSearchQuery == null ||
                             GenderSearchQuery.Code == _allGendersGender.Code ||
                             x.Gender.Code == GenderSearchQuery.Code);
-                    })
-                    .ToList();
+                    }).ToList();
+
+                List<Client> shownClientsOrdered;
+                var sortDescription = ClientsView.SortDescriptions.FirstOrDefault();
+                var propertyName = sortDescription.PropertyName;
+                if (propertyName != null)
+                {
+                    shownClientsOrdered = propertyName switch
+                    {
+                        "LastName" => shownClients.OrderBy(x => x.LastName).ToList(),
+                        "LastVisitDate" => shownClients.OrderByDescending(x => x.LastVisitDate).ToList(),
+                        "VisitsCount" => shownClients.OrderByDescending(x => x.VisitsCount).ToList(),
+                        _ => throw new Exception()
+                    };
+                }
+                else
+                {
+                    shownClientsOrdered = shownClients.ToList();
+                }
+
                 var listClient = shownClients.FirstOrDefault(x => x.ID == client.ID);
                 bool indexMatch = false;
                 if (listClient != null)
                 {
-                    var index = shownClients.IndexOf(listClient);
+                    var index = shownClientsOrdered.IndexOf(listClient);
                     indexMatch = index >= CurrentPageFirstItemIndex && index < CurrentPageFirstItemIndex + OnePageItemsCount;
                 }
 
                 return fullNameMatch && emailMatch && phoneMatch && genderMatch && indexMatch;
             };
-
-            //ClientsView.Filter += o =>
-            //{
-            //    if (ShowAllItems)
-            //    {
-            //        return true;
-            //    }
-
-            //    var client = (Client)o;
-
-            //    var shownClientsList = ClientsView.Cast<Client>().ToList();
-            //    var index = shownClientsList.IndexOf(client);
-            //    var pageMatch = index >= CurrentPageFirstItemIndex && index < CurrentPageFirstItemIndex + OnePageItemsCount;
-            //    return pageMatch;
-            //};
-
+            ClientsView.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
+            
             LoadData();
         }
 
@@ -264,7 +284,8 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
 
             using (var db = new AppContext())
             {
-                //await db.Genders.LoadAsync();
+                await db.Services.LoadAsync();
+                await db.ClientServices.LoadAsync();
 
                 synchronizationContext.Send(o =>
                 {

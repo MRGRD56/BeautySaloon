@@ -16,14 +16,15 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="3" Grid.IsSharedSizeScope="True">
+        <StackPanel Margin="3">
             <Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="LeftColumn"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -55,14 +56,37 @@
                                   SelectedItem="{Binding GenderSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
                         <Grid Grid.Column="1">
                             <Button HorizontalAlignment="Right" Content="Сброс" Style="{StaticResource PrimaryButton}"
-                                    Command="{Binding ResetFilterCommand}"/>
+                                    Command="{Binding ResetFilterCommand}" Height="25"/>
                         </Grid>
+                    </Grid>
+                    <Label Grid.Column="0" Grid.Row="4" Content="Сортировка:"/>
+                    <Grid Grid.Column="1" Grid.Row="4" Margin="0 2 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}"></Style>
+                        </Grid.Resources>
+                        <Button Content="По фамилии" Margin="0 0 2 0" 
+                                Tag="LastName"
+                                Command="{Binding ChangeSortCommand}" 
+                                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                        <Button Content="По дате посл. посещения" Grid.Column="1" Margin="2 0"
+                                Tag="LastVisitDate"
+                                Command="{Binding ChangeSortCommand}" 
+                                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                        <Button Content="По количеству посещений" Grid.Column="2" Margin="2 0 0 0"
+                                Tag="VisitsCount"
+                                Command="{Binding ChangeSortCommand}" 
+                                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     </Grid>
                 </Grid>
             </Grid>
         </StackPanel>
         <DataGrid Grid.Row="1" Style="{StaticResource ReadonlyDataGrid}" 
-                  ItemsSource="{Binding ClientsView}">
+                  ItemsSource="{Binding ClientsView}" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
                 <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
@@ -73,9 +97,9 @@
                 <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
                 <DataGridTextColumn Header="Дата добавления" Binding="{Binding RegistrationDate, StringFormat={}{0:dd.MM.yyyy}}"/>
-                <!--<DataGridTextColumn Header="Дата посл. посещения" Binding="{Binding }"/>
-                <DataGridTextColumn Header="Кол-во посещений" Binding="{Binding Gender.Name}"/>
-                <DataGridTextColumn Header="Теги" Binding="{Binding Gender.Name}"/>-->
+                <DataGridTextColumn Header="Посл. посещение" Binding="{Binding LastVisitDateString}"/>
+                <DataGridTextColumn Header="Кол-во посещений" Binding="{Binding VisitsCount}"/>
+                <!--<DataGridTextColumn Header="Теги" Binding="{Binding Gender.Name}"/>-->
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="2" Margin=" 5">
