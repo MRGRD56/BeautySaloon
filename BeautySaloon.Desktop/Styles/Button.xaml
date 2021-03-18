@@ -113,7 +113,8 @@
                             <Setter Property="Background" TargetName="border" Value="{StaticResource SecondaryBackgroundDarkBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Background" TargetName="border" Value="Gray"/>
+                            <Setter Property="Background" TargetName="border" Value="LightGray"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="Gray"/>
                             <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

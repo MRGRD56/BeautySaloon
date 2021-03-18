@@ -78,8 +78,41 @@
                 <DataGridTextColumn Header="Теги" Binding="{Binding Gender.Name}"/>-->
             </DataGrid.Columns>
         </DataGrid>
-        <Grid Grid.Row="2">
-            
+        <Grid Grid.Row="2" Margin=" 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}"/>
+            </Grid.Resources>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="◀" Padding="-2 0 0 1" Width="25" Height="25" Command="{Binding PreviousPageCommand}"/>
+                <TextBlock VerticalAlignment="Center" Margin="5 0">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} / {1}">
+                            <Binding Path="CurrentPage"/>
+                            <Binding Path="PagesCount"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <Button Content="▶" Padding="0 0 -2 1" Width="25" Height="25" Command="{Binding NextPageCommand}"/>
+            </StackPanel>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} из {1}">
+                        <Binding Path="ShownItemsCount"/>
+                        <Binding Path="TotalItemsCount"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <StackPanel Orientation="Horizontal" Grid.Column="2">
+                <Button Content="10" Margin="0 0 5 0" Command="{Binding ChangeOnePageItemsCount}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                <Button Content="50" Margin="0 0 5 0" Command="{Binding ChangeOnePageItemsCount}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                <Button Content="200" Margin="0 0 5 0" Command="{Binding ChangeOnePageItemsCount}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                <Button Content="ВСЕ" Command="{Binding ChangeOnePageItemsCount}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>
