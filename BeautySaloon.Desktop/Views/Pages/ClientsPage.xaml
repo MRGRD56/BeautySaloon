@@ -16,14 +16,15 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel>
+        <StackPanel Margin="3" Grid.IsSharedSizeScope="True">
             <Grid>
-                <Grid Margin="3">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="LeftColumn"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -43,13 +44,13 @@
                     <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding EmailSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Телефон: " Grid.Row="2"/>
                     <TextBox Grid.Column="1"  Grid.Row="2" Text="{Binding PhoneSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="Пол: " Grid.Row="3"/>
+                    <Grid Grid.Column="1" Grid.Row="3" Margin="0 2">
+                        <ComboBox Height="25" Style="{DynamicResource PrimaryComboBox}"
+                                  ItemsSource="{Binding Genders}" DisplayMemberPath="Name" 
+                                  SelectedItem="{Binding GenderSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
             </Grid>
         </StackPanel>
         <DataGrid Grid.Row="1" Style="{StaticResource ReadonlyDataGrid}" 

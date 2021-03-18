@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media;
 using BeautySaloon.Context;
 using BeautySaloon.Library;
 using BeautySaloon.Model.DbModels;
@@ -17,6 +18,14 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
 {
     public class ClientsPageViewModel : BaseViewModel
     {
+        private readonly Gender _allGendersGender = new Gender
+        {
+            Code = "All",
+            Name = "Все"
+        };
+
+        public List<Gender> Genders { get; set; } = new List<Gender>();
+
         private readonly ObservableCollection<Client> _clients = new ObservableCollection<Client>();
 
         public ICollectionView ClientsView { get; set; }
@@ -24,6 +33,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
         private string _fullNameSearchQuery;
         private string _emailSearchQuery;
         private string _phoneSearchQuery;
+        private Gender _genderSearchQuery;
 
         public string FullNameSearchQuery
         {
@@ -55,6 +65,17 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        public Gender GenderSearchQuery
+        {
+            get => _genderSearchQuery;
+            set
+            {
+                _genderSearchQuery = value;
+                OnPropertyChanged();
+                UpdateData();
+            }
+        }
+
         private void UpdateData()
         {
             ClientsView.Refresh();
@@ -69,8 +90,11 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 var fullNameMatch = client.FullName.IsMatch(FullNameSearchQuery);
                 var emailMatch = client.Email.IsMatch(EmailSearchQuery);
                 var phoneMatch = client.Phone.IsMatch(PhoneSearchQuery);
+                var genderMatch = GenderSearchQuery == null || 
+                    GenderSearchQuery.Code == _allGendersGender.Code ||
+                    client.Gender.Code == GenderSearchQuery.Code;
 
-                return fullNameMatch && emailMatch && phoneMatch;
+                return fullNameMatch && emailMatch && phoneMatch && genderMatch;
             };
 
             LoadData();
@@ -87,12 +111,24 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
 
             using (var db = new AppContext())
             {
-                await db.Genders.LoadAsync();
+                //await db.Genders.LoadAsync();
+
+                synchronizationContext.Send(o => 
+                {
+                    Genders.Add(_allGendersGender);
+                }, null);
+
+                await db.Genders.ForEachAsync(x =>
+                {
+                    synchronizationContext.Send(o => Genders.Add(x), null);
+                });
 
                 await db.Clients.ForEachAsync(x =>
                 {
                     synchronizationContext.Send(o => _clients.Add(x), null);
                 });
+
+                GenderSearchQuery = _allGendersGender;
             }
         }
     }
