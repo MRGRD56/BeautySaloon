@@ -46,9 +46,17 @@
                     <TextBox Grid.Column="1"  Grid.Row="2" Text="{Binding PhoneSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Пол: " Grid.Row="3"/>
                     <Grid Grid.Column="1" Grid.Row="3" Margin="0 2">
-                        <ComboBox Height="25" Style="{DynamicResource PrimaryComboBox}"
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Height="25" Style="{DynamicResource PrimaryComboBox}" Margin="0 0 4 0"
                                   ItemsSource="{Binding Genders}" DisplayMemberPath="Name" 
                                   SelectedItem="{Binding GenderSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Grid Grid.Column="1">
+                            <Button HorizontalAlignment="Right" Content="Сброс" Style="{StaticResource PrimaryButton}"
+                                    Command="{Binding ResetFilterCommand}"/>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>

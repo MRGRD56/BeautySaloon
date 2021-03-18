@@ -41,6 +41,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             set
             {
                 _fullNameSearchQuery = value;
+                OnPropertyChanged();
                 UpdateData();
             }
         }
@@ -51,6 +52,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             set
             {
                 _emailSearchQuery = value;
+                OnPropertyChanged();
                 UpdateData();
             }
         }
@@ -61,6 +63,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             set
             {
                 _phoneSearchQuery = value;
+                OnPropertyChanged();
                 UpdateData();
             }
         }
@@ -75,6 +78,14 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 UpdateData();
             }
         }
+
+        public RelayCommand ResetFilterCommand => new RelayCommand(o =>
+        {
+            FullNameSearchQuery = "";
+            EmailSearchQuery = "";
+            PhoneSearchQuery = "";
+            GenderSearchQuery = _allGendersGender;
+        });
 
         private void UpdateData()
         {
