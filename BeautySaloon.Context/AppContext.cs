@@ -9,7 +9,7 @@ namespace BeautySaloon.Context
     public partial class AppContext : DbContext
     {
         public AppContext()
-            : base("name=AppContext")
+            : base(@"data source=localhost\SQLEXPRESS;initial catalog=Beauty;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
         }
 

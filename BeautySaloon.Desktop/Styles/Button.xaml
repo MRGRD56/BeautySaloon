@@ -62,6 +62,7 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="80 8"/>
         <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -94,6 +95,7 @@
         <Setter Property="Padding" Value="8 5"/>
         <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">

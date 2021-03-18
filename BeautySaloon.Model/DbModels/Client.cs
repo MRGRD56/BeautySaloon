@@ -28,6 +28,19 @@ namespace BeautySaloon.Model.DbModels
         [StringLength(50)]
         public string Patronymic { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                if (FirstName == null || LastName == null || Patronymic == null)
+                {
+                    return "";
+                }
+
+                return $"{LastName} {FirstName} {Patronymic}";
+            }
+        }
+
         [Column(TypeName = "date")]
         public DateTime? Birthday { get; set; }
 

@@ -4,10 +4,17 @@
 
     <Style TargetType="Window" x:Key="WindowStyle">
         <Setter Property="FontFamily" Value="Tahoma"/>
+        <Setter Property="Background" Value="White"/>
     </Style>
     
     <Style TargetType="Page" x:Key="PageStyle">
         <Setter Property="FontFamily" Value="Tahoma"/>
+        <Setter Property="Background" Value="White"/>
+    </Style>
+
+    <Style TargetType="DataGrid" x:Key="ReadonlyDataGrid">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
     </Style>
     
 </ResourceDictionary>

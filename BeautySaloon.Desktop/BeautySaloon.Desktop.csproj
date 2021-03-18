@@ -38,6 +38,13 @@
     <ApplicationIcon>beauty_logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\Shared\Packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\Shared\Packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -73,6 +80,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\TextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Pages\ClientsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -89,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\PagesViewModels\ClientsPageViewModel.cs" />
     <Compile Include="ViewModels\WindowsViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Pages\ClientsPage.xaml.cs">
       <DependentUpon>ClientsPage.xaml</DependentUpon>
@@ -130,14 +142,16 @@
       <Project>{aa8cef61-1320-45ac-af4e-1da8711a7fe5}</Project>
       <Name>BeautySaloon.Context</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BeautySaloon.Library\BeautySaloon.Library.csproj">
+      <Project>{97cb1578-cd4c-4d9f-9103-d82b19463e52}</Project>
+      <Name>BeautySaloon.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BeautySaloon.Model\BeautySaloon.Model.csproj">
       <Project>{80af755c-1418-4d39-802e-a2a58caa16f9}</Project>
       <Name>BeautySaloon.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\PagesViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\beauty_logo.png" />
   </ItemGroup>

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySaloon.Context", "Bea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySaloon.Model", "BeautySaloon.Model\BeautySaloon.Model.csproj", "{80AF755C-1418-4D39-802E-A2A58CAA16F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySaloon.Library", "BeautySaloon.Library\BeautySaloon.Library.csproj", "{97CB1578-CD4C-4D9F-9103-D82B19463E52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{80AF755C-1418-4D39-802E-A2A58CAA16F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80AF755C-1418-4D39-802E-A2A58CAA16F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80AF755C-1418-4D39-802E-A2A58CAA16F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97CB1578-CD4C-4D9F-9103-D82B19463E52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97CB1578-CD4C-4D9F-9103-D82B19463E52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97CB1578-CD4C-4D9F-9103-D82B19463E52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97CB1578-CD4C-4D9F-9103-D82B19463E52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
