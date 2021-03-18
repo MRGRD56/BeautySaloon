@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BeautySaloon.Desktop" xmlns:windowsviewmodels="clr-namespace:BeautySaloon.Desktop.ViewModels.WindowsViewModels"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}"
-        Title="MainWindow" Height="650" Width="1060">
+        Title="MainWindow" Height="650" Width="1060"
+        MinWidth="500" MinHeight="300">
     <Window.DataContext>
         <windowsviewmodels:MainWindowViewModel/>
     </Window.DataContext>

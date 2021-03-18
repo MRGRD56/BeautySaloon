@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -31,6 +32,23 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 "VisitsCount" => new SortDescription("VisitsCount", ListSortDirection.Descending),
                 _ => throw new Exception($"ChangeSortCommand: {tag}")
             });
+
+            LastNameButtonFontWeight = FontWeights.Normal;
+            LastVisitButtonFontWeight = FontWeights.Normal;
+            VisitsCountButtonFontWeight = FontWeights.Normal;
+
+            switch (tag)
+            {
+                case "LastName":
+                    LastNameButtonFontWeight = FontWeights.Bold;
+                    break;
+                case "LastVisitDate":
+                    LastVisitButtonFontWeight = FontWeights.Bold;
+                    break;
+                case "VisitsCount":
+                    VisitsCountButtonFontWeight = FontWeights.Bold;
+                    break;
+            }
 
             UpdateData();
         });
@@ -156,6 +174,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
         private int _onePageItemsCount;
         private int _pagesCount;
         private int _currentPage = 1;
+        private FontWeight _lastNameButtonFontWeight = FontWeights.Bold;
+        private FontWeight _lastVisitButtonFontWeight = FontWeights.Normal;
+        private FontWeight _visitsCountButtonFontWeight = FontWeights.Normal;
 
         public string FullNameSearchQuery
         {
@@ -215,6 +236,33 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             ShownItemsCount = ClientsView.Cast<Client>().Count();
         }
 
+        public FontWeight LastNameButtonFontWeight
+        {
+            get => _lastNameButtonFontWeight; 
+            set
+            {
+                _lastNameButtonFontWeight = value;
+                OnPropertyChanged();
+            }
+        }
+        public FontWeight LastVisitButtonFontWeight
+        {
+            get => _lastVisitButtonFontWeight; 
+            set
+            {
+                _lastVisitButtonFontWeight = value;
+                OnPropertyChanged();
+            }
+        }
+        public FontWeight VisitsCountButtonFontWeight
+        {
+            get => _visitsCountButtonFontWeight; 
+            set
+            {
+                _visitsCountButtonFontWeight = value;
+                OnPropertyChanged();
+            }
+        }
         public ClientsPageViewModel()
         {
             ClientsView = CollectionViewSource.GetDefaultView(_clients);
@@ -269,7 +317,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 return fullNameMatch && emailMatch && phoneMatch && genderMatch && indexMatch;
             };
             ClientsView.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
-            
+
             LoadData();
         }
 
