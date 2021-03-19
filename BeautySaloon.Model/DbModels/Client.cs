@@ -2,18 +2,24 @@ namespace BeautySaloon.Model.DbModels
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
     [Table("Client")]
-    public partial class Client
+    public partial class Client : ICloneable, IDataErrorInfo
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Client()
-        {
-            //ClientServices = new HashSet<ClientService>();
-            //Tags = new HashSet<Tag>();
+        public string this[string columnName]
+        { 
+            get
+            {
+                return columnName switch
+                {
+                    
+                    _ => ""
+                };
+            }
         }
 
         public int ID { get; set; }
@@ -69,6 +75,24 @@ namespace BeautySaloon.Model.DbModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public List<Tag> Tags { get; set; } = new List<Tag>();
 
+        public string TagsHtml
+        {
+            get
+            {
+                if (!Tags.Any())
+                {
+                    return "";
+                }
+
+                var html = "";
+                html += "<style>*, body { margin: 0; padding: 0; }</style>";
+                html += "<div style=\"display: flex; flex-wrap: wrap;\">";
+                Tags.ForEach(x => html += $"<div style=\"color: #{x.Color};\">{x.Title}</div>");
+                html += "</div>";
+                return html;
+            }
+        }
+
         public ClientService LastClientService
         {
             get
@@ -100,5 +124,24 @@ namespace BeautySaloon.Model.DbModels
         }
 
         public int VisitsCount => ClientServices.Count;
+
+        public string Error => throw new NotImplementedException();
+
+        public object Clone()
+        {
+            return new Client
+            {
+                ID = ID,
+                LastName = LastName,
+                FirstName = FirstName,
+                Patronymic = Patronymic,
+                Email = Email,
+                Phone = Phone,
+                Birthday = Birthday,
+                Gender = Gender,
+                GenderCode = GenderCode,
+                PhotoPath = PhotoPath
+            };
+        }
     }
 }

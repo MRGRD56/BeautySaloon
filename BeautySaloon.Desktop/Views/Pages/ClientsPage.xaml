@@ -3,93 +3,117 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:BeautySaloon.Desktop.Views.Pages" xmlns:pagesviewmodels="clr-namespace:BeautySaloon.Desktop.ViewModels.PagesViewModels"
+      xmlns:local="clr-namespace:BeautySaloon.Desktop.Views.Pages" xmlns:pagesviewmodels="clr-namespace:BeautySaloon.Desktop.ViewModels.PagesViewModels" xmlns:converters="clr-namespace:BeautySaloon.Desktop.Converters"
       mc:Ignorable="d" Style="{StaticResource PageStyle}"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1170"
       Title="Клиенты">
     <Page.DataContext>
         <pagesviewmodels:ClientsPageViewModel/>
     </Page.DataContext>
+    <Page.Resources>
+        <converters:ColorStringConverter x:Key="ColorStringConverter"/>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="3">
-            <Grid>
+        <StackPanel>
+            <Border BorderBrush="LightGray" BorderThickness="0 0 0 1">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.Resources>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource PrimaryTextBox}">
-                            <Setter Property="Margin" Value="0 2"/>
-                            <Setter Property="Height" Value="25"/>
-                        </Style>
-                        <Style TargetType="Label">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Label Content="ФИО: "/>
-                    <TextBox Grid.Column="1" Text="{Binding FullNameSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="Email: " Grid.Row="1"/>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding EmailSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="Телефон: " Grid.Row="2"/>
-                    <TextBox Grid.Column="1"  Grid.Row="2" Text="{Binding PhoneSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="Пол: " Grid.Row="3"/>
-                    <Grid Grid.Column="1" Grid.Row="3" Margin="0 2">
+                    <Grid Margin="3">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox Height="25" Style="{DynamicResource PrimaryComboBox}" Margin="0 0 4 0"
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource PrimaryTextBox}">
+                                <Setter Property="Margin" Value="0 2"/>
+                                <Setter Property="Height" Value="25"/>
+                            </Style>
+                            <Style TargetType="Label">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Label Content="ФИО: "/>
+                        <TextBox Grid.Column="1" Text="{Binding FullNameSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="Email: " Grid.Row="1"/>
+                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding EmailSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="Телефон: " Grid.Row="2"/>
+                        <TextBox Grid.Column="1"  Grid.Row="2" Text="{Binding PhoneSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="День рождения: " Grid.Row="3"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" Style="{DynamicResource PrimaryComboBox}" Margin="0 2" Height="25"
+                              ItemsSource="{Binding BirthdayFilters}"
+                              SelectedIndex="{Binding SelectedBirthdayFilterIndex, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="Пол: " Grid.Row="4"/>
+                        <Grid Grid.Column="1" Grid.Row="4" Margin="0 2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Height="25" Style="{DynamicResource PrimaryComboBox}" Margin="0 0 4 0"
                                   ItemsSource="{Binding Genders}" DisplayMemberPath="Name" 
                                   SelectedItem="{Binding GenderSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Grid Grid.Column="1">
-                            <Button HorizontalAlignment="Right" Content="Сброс" Style="{StaticResource PrimaryButton}"
+                            <Grid Grid.Column="1">
+                                <Button HorizontalAlignment="Right" Content="Сброс" Style="{StaticResource PrimaryOutlineButton}"
                                     Command="{Binding ResetFilterCommand}" Height="25"/>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Label Grid.Column="0" Grid.Row="4" Content="Сортировка:"/>
-                    <Grid Grid.Column="1" Grid.Row="4" Margin="0 2 0 0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}"></Style>
-                        </Grid.Resources>
-                        <Button Content="По фамилии" Margin="0 0 2 0" 
+                        <Label Grid.Column="0" Grid.Row="5" Content="Сортировка:"/>
+                        <Grid Grid.Column="1" Grid.Row="5" Margin="0 2 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource PrimaryOutlineButton}"></Style>
+                            </Grid.Resources>
+                            <Button Content="По фамилии" Margin="0 0 2 0" 
                                 Tag="LastName"
                                 FontWeight="{Binding LastNameButtonFontWeight}"
                                 Command="{Binding ChangeSortCommand}" 
                                 CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
-                        <Button Content="По дате посл. посещения" Grid.Column="1" Margin="2 0"
+                            <Button Content="По дате посл. посещения" Grid.Column="1" Margin="2 0"
                                 Tag="LastVisitDate"
                                 FontWeight="{Binding LastVisitButtonFontWeight}"
                                 Command="{Binding ChangeSortCommand}" 
                                 CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
-                        <Button Content="По количеству посещений" Grid.Column="2" Margin="2 0 0 0"
+                            <Button Content="По количеству посещений" Grid.Column="2" Margin="2 0 0 0"
                                 Tag="VisitsCount"
                                 FontWeight="{Binding VisitsCountButtonFontWeight}"
                                 Command="{Binding ChangeSortCommand}" 
                                 CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                        </Grid>
                     </Grid>
                 </Grid>
+            </Border>
+            <Grid>
+                <StackPanel Orientation="Horizontal" Margin="3">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource PrimaryOutlineButton}">
+                            <Setter Property="Margin" Value="2 0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button Content="➕" ToolTip="Добавить клиента"/>
+                    <Button Content="✏" ToolTip="Редактировать клиента"/>
+                    <Button Content="❌" ToolTip="Удалить клиента" Command="{Binding DeleteClientCommand}"/>
+                </StackPanel>
             </Grid>
         </StackPanel>
         <DataGrid Grid.Row="1" Style="{StaticResource ReadonlyDataGrid}" 
-                  ItemsSource="{Binding ClientsView}" CanUserSortColumns="False">
+                  ItemsSource="{Binding ClientsView}" 
+                  SelectedItem="{Binding SelectedClient}"
+                  CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
                 <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
@@ -102,6 +126,24 @@
                 <DataGridTextColumn Header="Дата добавления" Binding="{Binding RegistrationDate, StringFormat={}{0:dd.MM.yyyy}}"/>
                 <DataGridTextColumn Header="Посл. посещение" Binding="{Binding LastVisitDateString}"/>
                 <DataGridTextColumn Header="Кол-во посещений" Binding="{Binding VisitsCount}"/>
+                <DataGridTemplateColumn Header="Теги">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding Tags}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Padding="2 0" Text="{Binding Title}" Foreground="{Binding Color, Converter={StaticResource ColorStringConverter}}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <!--<DataGridTextColumn Header="Теги" Binding="{Binding Gender.Name}"/>-->
             </DataGrid.Columns>
         </DataGrid>
@@ -112,7 +154,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}"/>
+                <Style TargetType="Button" BasedOn="{StaticResource PrimaryOutlineButton}"/>
             </Grid.Resources>
             <StackPanel Orientation="Horizontal">
                 <Button Content="◀" Padding="-2 0 0 1" Width="25" Height="25" Command="{Binding PreviousPageCommand}"/>

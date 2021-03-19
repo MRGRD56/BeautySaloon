@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BeautySaloon.Desktop" xmlns:windowsviewmodels="clr-namespace:BeautySaloon.Desktop.ViewModels.WindowsViewModels"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}"
-        Title="MainWindow" Height="650" Width="1060"
+        Title="MainWindow" Height="650" Width="1170"
         MinWidth="500" MinHeight="300">
     <Window.DataContext>
         <windowsviewmodels:MainWindowViewModel/>
@@ -26,7 +26,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <StackPanel.Resources>
-                    <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                    <Style TargetType="Button" BasedOn="{StaticResource PrimaryOutlineButton}">
                         <Setter Property="Margin" Value="3 0"/>
                     </Style>
                 </StackPanel.Resources>

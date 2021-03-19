@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using BeautySaloon.Context;
+using BeautySaloon.Desktop.Extensions;
 using BeautySaloon.Library;
 using BeautySaloon.Model.DbModels;
 using AppContext = BeautySaloon.Context.AppContext;
@@ -89,6 +90,22 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             UpdateData();
         });
 
+        public List<string> BirthdayFilters { get; set; } = new List<string>
+        {
+            "Все",
+            "В текущем месяце"
+        };
+
+        public int SelectedBirthdayFilterIndex
+        {
+            get => _selectedBirthdayFilterIndex; 
+            set
+            {
+                _selectedBirthdayFilterIndex = value;
+                OnPropertyChanged();
+                UpdateData();
+            }
+        }
         private int CurrentPageFirstItemIndex => (CurrentPage - 1) * OnePageItemsCount;
 
         public int CurrentPage
@@ -177,6 +194,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
         private FontWeight _lastNameButtonFontWeight = FontWeights.Bold;
         private FontWeight _lastVisitButtonFontWeight = FontWeights.Normal;
         private FontWeight _visitsCountButtonFontWeight = FontWeights.Normal;
+        private int _selectedBirthdayFilterIndex = 0;
 
         public string FullNameSearchQuery
         {
@@ -238,7 +256,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
 
         public FontWeight LastNameButtonFontWeight
         {
-            get => _lastNameButtonFontWeight; 
+            get => _lastNameButtonFontWeight;
             set
             {
                 _lastNameButtonFontWeight = value;
@@ -247,7 +265,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
         }
         public FontWeight LastVisitButtonFontWeight
         {
-            get => _lastVisitButtonFontWeight; 
+            get => _lastVisitButtonFontWeight;
             set
             {
                 _lastVisitButtonFontWeight = value;
@@ -256,13 +274,52 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
         }
         public FontWeight VisitsCountButtonFontWeight
         {
-            get => _visitsCountButtonFontWeight; 
+            get => _visitsCountButtonFontWeight;
             set
             {
                 _visitsCountButtonFontWeight = value;
                 OnPropertyChanged();
             }
         }
+
+        private bool GetClientSearchMatch(Client client)
+        {
+            var fullNameMatch = client.FullName.IsMatch(FullNameSearchQuery);
+            var emailMatch = client.Email.IsMatch(EmailSearchQuery);
+            var phoneMatch = client.Phone.IsMatch(PhoneSearchQuery);
+            var genderMatch = GenderSearchQuery == null ||
+                GenderSearchQuery.Code == _allGendersGender.Code ||
+                client.Gender.Code == GenderSearchQuery.Code;
+            var birthdayMatch = SelectedBirthdayFilterIndex == 0 ||
+                (client.Birthday.HasValue && client.Birthday.Value.Month == DateTime.Today.Month);
+
+            return fullNameMatch && emailMatch && phoneMatch && genderMatch && birthdayMatch;
+        }
+
+        public Client SelectedClient { get; set; }
+
+        public RelayCommand DeleteClientCommand => new RelayCommand(async o =>
+        {
+            if (SelectedClient.VisitsCount > 0)
+            {
+                MBox.ShowError("Невозможно удалить клиента, т.к. есть информация о посещениях.");
+                return;
+            }
+
+            var mbox = MBox.ShowOkCancel($"Вы действительно хотите удалить клиента '{SelectedClient.FullName}'?", "Удаление клиента");
+            if (mbox != MessageBoxResult.OK) return;
+
+            using (var db = new AppContext())
+            {
+                var dbClient = await db.Clients.FindAsync(SelectedClient.ID);
+                db.Clients.Remove(dbClient);
+                await db.SaveChangesAsync();
+            }
+
+            _clients.Remove(SelectedClient);
+            UpdateData();
+        }, o => SelectedClient != null);
+
         public ClientsPageViewModel()
         {
             ClientsView = CollectionViewSource.GetDefaultView(_clients);
@@ -270,23 +327,10 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             {
                 var client = (Client)o;
 
-                var fullNameMatch = client.FullName.IsMatch(FullNameSearchQuery);
-                var emailMatch = client.Email.IsMatch(EmailSearchQuery);
-                var phoneMatch = client.Phone.IsMatch(PhoneSearchQuery);
-                var genderMatch = GenderSearchQuery == null ||
-                    GenderSearchQuery.Code == _allGendersGender.Code ||
-                    client.Gender.Code == GenderSearchQuery.Code;
+                var searchMatch = GetClientSearchMatch(client);
 
-                var shownClients = _clients
-                    .Where(x =>
-                    {
-                        return x.FullName.IsMatch(FullNameSearchQuery) &&
-                            x.Email.IsMatch(EmailSearchQuery) &&
-                            x.Phone.IsMatch(PhoneSearchQuery) &&
-                            (GenderSearchQuery == null ||
-                            GenderSearchQuery.Code == _allGendersGender.Code ||
-                            x.Gender.Code == GenderSearchQuery.Code);
-                    }).ToList();
+                //TODO переписать
+                var shownClients = _clients.Where(x => GetClientSearchMatch(x)).ToList();
 
                 List<Client> shownClientsOrdered;
                 var sortDescription = ClientsView.SortDescriptions.FirstOrDefault();
@@ -314,7 +358,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                     indexMatch = index >= CurrentPageFirstItemIndex && index < CurrentPageFirstItemIndex + OnePageItemsCount;
                 }
 
-                return fullNameMatch && emailMatch && phoneMatch && genderMatch && indexMatch;
+                return searchMatch && indexMatch;
             };
             ClientsView.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
 
@@ -332,6 +376,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
 
             using (var db = new AppContext())
             {
+                await db.Tags.LoadAsync();
                 await db.Services.LoadAsync();
                 await db.ClientServices.LoadAsync();
 
@@ -351,7 +396,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 OnePageItemsCount = TotalItemsCount;
                 PagesCount = 1;
 
-                await db.Clients.ForEachAsync(x =>
+                await db.Clients.Include(x => x.Tags).ForEachAsync(x =>
                 {
                     synchronizationContext.Send(o => _clients.Add(x), null);
                 });
