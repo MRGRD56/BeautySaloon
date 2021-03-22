@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,8 @@ using System.Windows.Data;
 using System.Windows.Media;
 using BeautySaloon.Context;
 using BeautySaloon.Desktop.Extensions;
+using BeautySaloon.Desktop.Extensions.ModelsExtensions;
+using BeautySaloon.Desktop.Views.Windows;
 using BeautySaloon.Library;
 using BeautySaloon.Model.DbModels;
 using AppContext = BeautySaloon.Context.AppContext;
@@ -297,6 +300,40 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
         }
 
         public Client SelectedClient { get; set; }
+
+        public RelayCommand AddClientCommand => new(o =>
+        {
+            var db = new AppContext();
+            db.Database.Log = str => Debug.WriteLine(str);
+            var clientAddDialog = new ClientEditWindow();
+            clientAddDialog.ShowDialog();
+            if (!clientAddDialog.Result) return;
+            var dialogClient = clientAddDialog.Client;
+            dialogClient.Gender = db.Genders.Find(dialogClient.Gender.Code);
+            dialogClient.RegistrationDate = DateTime.Now;
+            db.Clients.Add(dialogClient);
+            db.SaveChanges();
+            dialogClient.SetTags(clientAddDialog.ClientTags, db);
+            _clients.Add(dialogClient);
+        });
+
+        public RelayCommand EditClientCommand => new(o =>
+        {
+            var db = new AppContext();
+            db.Database.Log = str => Debug.WriteLine(str);
+            var clientEditDialog = new ClientEditWindow(SelectedClient);
+            clientEditDialog.ShowDialog();
+            if (!clientEditDialog.Result) return;
+            var dialogClient = clientEditDialog.Client;
+            var dbClient = db.Clients
+                .Include(x => x.Tags)
+                .FirstOrDefault(x => x.ID == dialogClient.ID);
+            dbClient.CopyPropertiesFrom(dialogClient, db);
+            SelectedClient.CopyPropertiesFrom(dialogClient, db);
+            dbClient.SetTags(clientEditDialog.ClientTags, db);
+            db.SaveChanges();
+            SelectedClient.SetTagsNoDb(clientEditDialog.ClientTags);
+        }, o => SelectedClient != null);
 
         public RelayCommand DeleteClientCommand => new RelayCommand(async o =>
         {

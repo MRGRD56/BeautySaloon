@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,14 @@ namespace BeautySaloon.Desktop.Views.Windows
     /// </summary>
     public partial class ClientEditWindow : Window
     {
+        private ClientEditWindowViewModel ViewModel => (ClientEditWindowViewModel) DataContext;
+
+        public Client Client => ViewModel.EditingClient;
+
+        public ObservableCollection<Tag> ClientTags => ViewModel.ClientTags;
+
+        public bool Result => ViewModel.Result;
+
         /// <summary>
         /// Создаёт окно для добавления клиента.
         /// </summary>

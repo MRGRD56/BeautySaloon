@@ -26,8 +26,6 @@ namespace BeautySaloon.Desktop.Views.Windows
             InitializeComponent();
             Frame.Navigated += Frame_Navigated;
             Navigation.Navigate(new MainMenuPage());
-
-            new ClientEditWindow().Show();
         }
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)

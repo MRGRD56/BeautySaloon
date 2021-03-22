@@ -3,94 +3,205 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BeautySaloon.Desktop.Views.Windows" xmlns:windowsviewmodels="clr-namespace:BeautySaloon.Desktop.ViewModels.WindowsViewModels"
+        xmlns:local="clr-namespace:BeautySaloon.Desktop.Views.Windows" xmlns:windowsviewmodels="clr-namespace:BeautySaloon.Desktop.ViewModels.WindowsViewModels" xmlns:converters="clr-namespace:BeautySaloon.Desktop.Converters"
         mc:Ignorable="d" Style="{StaticResource WindowStyle}" WindowStartupLocation="CenterScreen"
         Title="ClientEditWindow" 
-        Height="450" Width="450" 
+        Height="450" Width="800" 
         MinHeight="450" MinWidth="400"
-        MaxHeight="600" MaxWidth="600">
+        MaxHeight="600" MaxWidth="1000">
     <d:Window.DataContext>
         <windowsviewmodels:ClientEditWindowViewModel/>
     </d:Window.DataContext>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+        <converters:ColorStringConverter x:Key="ColorStringConverter"/>
+        <DiscreteObjectKeyFrame x:Key="WindowDataContext" Value="{Binding}"/>
     </Window.Resources>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Margin="0 0 0 10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="27"/>
-                <RowDefinition Height="27"/>
-                <RowDefinition Height="27"/>
-                <RowDefinition Height="27"/>
-                <RowDefinition Height="27"/>
-                <RowDefinition Height="27"/>
-                <RowDefinition Height="27"/>
-                <RowDefinition Height="27"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.Resources>
-                <Style TargetType="TextBox" BasedOn="{StaticResource PrimaryTextBox}">
-                    <Setter Property="Height" Value="25"/>
-                </Style>
-                <Style TargetType="DatePicker" BasedOn="{StaticResource PrimaryDatePicker}">
-                    <Setter Property="Height" Value="25"/>
-                </Style>
-                <Style TargetType="RadioButton">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                </Style>
-            </Grid.Resources>
-            <Label Grid.Row="0" Grid.Column="0" Content="ID: " 
+            <Grid Margin="0 0 3 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource PrimaryTextBox}">
+                        <Setter Property="Height" Value="25"/>
+                    </Style>
+                    <Style TargetType="DatePicker" BasedOn="{StaticResource PrimaryDatePicker}">
+                        <Setter Property="Height" Value="25"/>
+                    </Style>
+                    <Style TargetType="RadioButton">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </Grid.Resources>
+                <Label Grid.Row="0" Grid.Column="0" Content="ID: " 
                    Visibility="{Binding IsEditMode, Converter={StaticResource VisibilityConverter}}"
                    Height="27"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding EditingClient.ID}" IsReadOnly="True"
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding EditingClient.ID}" IsReadOnly="True"
                      Visibility="{Binding IsEditMode, Converter={StaticResource VisibilityConverter}}"
                      Height="27"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="Фамилия: "/>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditingClient.LastName}"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="Имя "/>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding EditingClient.FirstName}"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="Отчество: "/>
-            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding EditingClient.Patronymic}"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="Email: "/>
-            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding EditingClient.Email}"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="Телефон: "/>
-            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding EditingClient.Phone}"/>
-            <Label Grid.Row="6" Grid.Column="0" Content="Дата рождения: "/>
-            <DatePicker Grid.Row="6" Grid.Column="1" SelectedDate="{Binding EditingClient.Birthday}"/>
-            <Label Grid.Row="7" Grid.Column="0" Content="Пол: "/>
-            <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
-                <RadioButton Content="Мужской"/>
-                <RadioButton Content="Женский" Margin="20 0 0 0"/>
-            </StackPanel>
-            <Label Grid.Row="8" Grid.Column="0" Content="Фото: "/>
-            <Grid Grid.Row="8" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="lorem.png" Margin="0 0 5 0"/>
-                <Button Grid.Column="1" Style="{StaticResource PrimaryOutlineButton}" 
+                <Label Grid.Row="1" Grid.Column="0" Content="Фамилия: "/>
+                <TextBox Grid.Row="1" Grid.Column="1">
+                    <TextBox.Text>
+                        <Binding Path="EditingClient.LastName">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="2" Grid.Column="0" Content="Имя "/>
+                <TextBox Grid.Row="2" Grid.Column="1">
+                    <TextBox.Text>
+                        <Binding Path="EditingClient.FirstName">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="3" Grid.Column="0" Content="Отчество: "/>
+                <TextBox Grid.Row="3" Grid.Column="1">
+                    <TextBox.Text>
+                        <Binding Path="EditingClient.Patronymic">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="4" Grid.Column="0" Content="Email: "/>
+                <TextBox Grid.Row="4" Grid.Column="1">
+                    <TextBox.Text>
+                        <Binding Path="EditingClient.Email">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="5" Grid.Column="0" Content="Телефон: "/>
+                <TextBox Grid.Row="5" Grid.Column="1">
+                    <TextBox.Text>
+                        <Binding Path="EditingClient.Phone">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="6" Grid.Column="0" Content="Дата рождения: "/>
+                <DatePicker Grid.Row="6" Grid.Column="1" SelectedDate="{Binding EditingClient.Birthday}"/>
+                <Label Grid.Row="7" Grid.Column="0" Content="Пол: "/>
+                <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
+                    <RadioButton Content="Мужской" IsChecked="{Binding IsMale}"/>
+                    <RadioButton Content="Женский" Margin="20 0 0 0" IsChecked="{Binding IsFemale}"/>
+                </StackPanel>
+                <Label Grid.Row="8" Grid.Column="0" Content="Фото: "/>
+                <Grid Grid.Row="8" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="{Binding EditingClient.PhotoName}" Margin="0 0 5 0"/>
+                    <Button Grid.Column="1" Style="{StaticResource PrimaryOutlineButton}" 
                         Content="..." 
                         ToolTip="Выбрать фотографию"
                         Command="{Binding LoadPhotoCommand}"/>
+                </Grid>
+                <Border Grid.Row="9" Grid.ColumnSpan="2" Margin="5" BorderThickness="2" BorderBrush="#303030" HorizontalAlignment="Left"
+                    MaxWidth="200" MaxHeight="100" 
+                    Visibility="{Binding IsPhotoLoaded, Converter={StaticResource VisibilityConverter}}">
+                    <Image Source="{Binding EditingClient.PhotoAbsolutePath}"/>
+                </Border>
             </Grid>
-            <Border Grid.Row="9" Grid.ColumnSpan="2" Margin="5" BorderThickness="1" BorderBrush="#303030" HorizontalAlignment="Left"
-                     MaxWidth="200" MaxHeight="100">
-                <Image Source="/Images/Клиенты/4.jpg"/>
-            </Border>
+            <Grid Grid.Column="1" Margin="3 0 0 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="Теги" FontSize="16"/>
+                <GroupBox Grid.Row="1" Header="Доступные теги">
+                    <ItemsControl ItemsSource="{Binding AvailableTags}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource TagBorder}" Margin="0 5 5 0">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4 0 0 0">
+                                        <TextBlock Text="{Binding Title}" Foreground="{Binding Color, Converter={StaticResource ColorStringConverter}}"
+                                               VerticalAlignment="Center"/>
+                                        <Button Style="{StaticResource SmallIconButton}" 
+                                                Content="➕"
+                                                ToolTip="Установить тег клиенту"
+                                                VerticalAlignment="Center" Margin="5 0 0 0"
+                                                Command="{Binding Source={StaticResource WindowDataContext}, Path=Value.AddTagCommand}"
+                                                CommandParameter="{Binding}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+                <GroupBox Grid.Row="2" Header="Теги клиента">
+                    <ItemsControl ItemsSource="{Binding ClientTags}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource TagBorder}" Margin="0 5 5 0">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4 0 0 0">
+                                        <TextBlock Text="{Binding Title}" Foreground="{Binding Color, Converter={StaticResource ColorStringConverter}}"
+                                               VerticalAlignment="Center"/>
+                                        <Button Style="{StaticResource SmallIconButton}"
+                                                Content="❌"
+                                                ToolTip="Удалить тег клиента"
+                                                VerticalAlignment="Center" Margin="5 0 0 0"
+                                                Command="{Binding Source={StaticResource WindowDataContext}, Path=Value.RemoveTagCommand}"
+                                                CommandParameter="{Binding}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+            </Grid>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Content="Готово" Style="{StaticResource PrimaryButton}"/>
-            <Button Content="Отмена" Margin="15 0 0 0" Style="{StaticResource PrimaryOutlineButton}"/>
+            <Button Content="Готово" Style="{StaticResource PrimaryButton}" 
+                    Command="{Binding OkCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+            <Button Content="Отмена" Margin="15 0 0 0" Style="{StaticResource PrimaryOutlineButton}"
+                    Command="{Binding CancelCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
         </StackPanel>
     </Grid>
 </Window>

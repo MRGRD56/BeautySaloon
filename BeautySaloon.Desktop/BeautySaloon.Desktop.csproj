@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -15,6 +16,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,14 +43,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\Shared\Packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\Shared\Packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,6 +72,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ColorStringConverter.cs" />
     <Compile Include="Extensions\MBox.cs" />
+    <Compile Include="Extensions\ModelsExtensions\ClientExtensions.cs" />
     <Compile Include="Navigation.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -152,6 +156,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -171,116 +176,20 @@
       <Name>BeautySaloon.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\ModelsExtensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\beauty_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="beauty_logo.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Клиенты\1.jpg" />
-    <Resource Include="Images\Клиенты\10.jpg" />
-    <Resource Include="Images\Клиенты\11.jpg" />
-    <Resource Include="Images\Клиенты\12.jpg" />
-    <Resource Include="Images\Клиенты\13.jpg" />
-    <Resource Include="Images\Клиенты\14.jpg" />
-    <Resource Include="Images\Клиенты\15.jpg" />
-    <Resource Include="Images\Клиенты\16.jpg" />
-    <Resource Include="Images\Клиенты\17.jpg" />
-    <Resource Include="Images\Клиенты\18.jpg" />
-    <Resource Include="Images\Клиенты\19.jpg" />
-    <Resource Include="Images\Клиенты\2.jpg" />
-    <Resource Include="Images\Клиенты\20.jpg" />
-    <Resource Include="Images\Клиенты\21.jpg" />
-    <Resource Include="Images\Клиенты\22.jpg" />
-    <Resource Include="Images\Клиенты\23.jpg" />
-    <Resource Include="Images\Клиенты\24.jpg" />
-    <Resource Include="Images\Клиенты\25.jpg" />
-    <Resource Include="Images\Клиенты\26.jpg" />
-    <Resource Include="Images\Клиенты\27.jpg" />
-    <Resource Include="Images\Клиенты\28.jpg" />
-    <Resource Include="Images\Клиенты\29.jpg" />
-    <Resource Include="Images\Клиенты\3.jpg" />
-    <Resource Include="Images\Клиенты\30.jpg" />
-    <Resource Include="Images\Клиенты\31.jpg" />
-    <Resource Include="Images\Клиенты\32.jpg" />
-    <Resource Include="Images\Клиенты\33.jpg" />
-    <Resource Include="Images\Клиенты\34.jpg" />
-    <Resource Include="Images\Клиенты\35.jpg" />
-    <Resource Include="Images\Клиенты\36.jpg" />
-    <Resource Include="Images\Клиенты\37.jpg" />
-    <Resource Include="Images\Клиенты\38.jpg" />
-    <Resource Include="Images\Клиенты\39.jpg" />
-    <Resource Include="Images\Клиенты\4.jpg" />
-    <Resource Include="Images\Клиенты\40.jpg" />
-    <Resource Include="Images\Клиенты\41.jpg" />
-    <Resource Include="Images\Клиенты\42.jpg" />
-    <Resource Include="Images\Клиенты\43.jpg" />
-    <Resource Include="Images\Клиенты\44.jpg" />
-    <Resource Include="Images\Клиенты\47.jpg" />
-    <Resource Include="Images\Клиенты\48.jpg" />
-    <Resource Include="Images\Клиенты\5.jpg" />
-    <Resource Include="Images\Клиенты\6.jpg" />
-    <Resource Include="Images\Клиенты\7.jpg" />
-    <Resource Include="Images\Клиенты\8.jpg" />
-    <Resource Include="Images\Клиенты\9.jpg" />
-    <Resource Include="Images\Клиенты\m1.jpg" />
-    <Resource Include="Images\Клиенты\m10.jpg" />
-    <Resource Include="Images\Клиенты\m11.jpg" />
-    <Resource Include="Images\Клиенты\m12.jpg" />
-    <Resource Include="Images\Клиенты\m13.jpg" />
-    <Resource Include="Images\Клиенты\m14.jpg" />
-    <Resource Include="Images\Клиенты\m15.jpg" />
-    <Resource Include="Images\Клиенты\m16.jpg" />
-    <Resource Include="Images\Клиенты\m17.jpg" />
-    <Resource Include="Images\Клиенты\m18.jpg" />
-    <Resource Include="Images\Клиенты\m19.jpg" />
-    <Resource Include="Images\Клиенты\m2.jpg" />
-    <Resource Include="Images\Клиенты\m20.jpg" />
-    <Resource Include="Images\Клиенты\m21.jpg" />
-    <Resource Include="Images\Клиенты\m22.jpg" />
-    <Resource Include="Images\Клиенты\m23.jpg" />
-    <Resource Include="Images\Клиенты\m24.jpg" />
-    <Resource Include="Images\Клиенты\m25.jpg" />
-    <Resource Include="Images\Клиенты\m26.jpg" />
-    <Resource Include="Images\Клиенты\m27.jpg" />
-    <Resource Include="Images\Клиенты\m28.jpg" />
-    <Resource Include="Images\Клиенты\m29.jpg" />
-    <Resource Include="Images\Клиенты\m3.jpg" />
-    <Resource Include="Images\Клиенты\m30.jpg" />
-    <Resource Include="Images\Клиенты\m31.jpg" />
-    <Resource Include="Images\Клиенты\m32.jpg" />
-    <Resource Include="Images\Клиенты\m33.jpg" />
-    <Resource Include="Images\Клиенты\m34.jpg" />
-    <Resource Include="Images\Клиенты\m35.jpg" />
-    <Resource Include="Images\Клиенты\m36.jpg" />
-    <Resource Include="Images\Клиенты\m37.jpg" />
-    <Resource Include="Images\Клиенты\m38.jpg" />
-    <Resource Include="Images\Клиенты\m39.jpg" />
-    <Resource Include="Images\Клиенты\m4.jpg" />
-    <Resource Include="Images\Клиенты\m40.jpg" />
-    <Resource Include="Images\Клиенты\m41.jpg" />
-    <Resource Include="Images\Клиенты\m42.jpg" />
-    <Resource Include="Images\Клиенты\m43.jpg" />
-    <Resource Include="Images\Клиенты\m44.jpg" />
-    <Resource Include="Images\Клиенты\m45.jpg" />
-    <Resource Include="Images\Клиенты\m46.jpg" />
-    <Resource Include="Images\Клиенты\m47.jpg" />
-    <Resource Include="Images\Клиенты\m48.jpg" />
-    <Resource Include="Images\Клиенты\m49.jpg" />
-    <Resource Include="Images\Клиенты\m5.jpg" />
-    <Resource Include="Images\Клиенты\m50.jpg" />
-    <Resource Include="Images\Клиенты\m6.jpg" />
-    <Resource Include="Images\Клиенты\m7.jpg" />
-    <Resource Include="Images\Клиенты\m8.jpg" />
-    <Resource Include="Images\Клиенты\m9.jpg" />
-    <Resource Include="Images\Клиенты\m96.jpg" />
-    <Resource Include="Images\Клиенты\m97.jpg" />
-    <Resource Include="Images\Клиенты\m98.jpg" />
-    <Resource Include="Images\Клиенты\m99.jpg" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
 </Project>

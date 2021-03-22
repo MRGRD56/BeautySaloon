@@ -104,8 +104,8 @@
                             <Setter Property="Margin" Value="2 0"/>
                         </Style>
                     </StackPanel.Resources>
-                    <Button Content="➕" ToolTip="Добавить клиента"/>
-                    <Button Content="✏" ToolTip="Редактировать клиента"/>
+                    <Button Content="➕" ToolTip="Добавить клиента" Command="{Binding AddClientCommand}"/>
+                    <Button Content="✏" ToolTip="Редактировать клиента" Command="{Binding EditClientCommand}"/>
                     <Button Content="❌" ToolTip="Удалить клиента" Command="{Binding DeleteClientCommand}"/>
                 </StackPanel>
             </Grid>

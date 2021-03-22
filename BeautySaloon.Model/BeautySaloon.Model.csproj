@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseModel.cs" />
     <Compile Include="DbModels\Client.cs" />
     <Compile Include="DbModels\ClientService.cs" />
     <Compile Include="DbModels\DocumentByService.cs" />
@@ -62,6 +63,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BeautySaloon.Library\BeautySaloon.Library.csproj">
+      <Project>{97cb1578-cd4c-4d9f-9103-d82b19463e52}</Project>
+      <Name>BeautySaloon.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

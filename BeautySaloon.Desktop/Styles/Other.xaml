@@ -16,5 +16,11 @@
         <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="AutoGenerateColumns" Value="False"/>
     </Style>
-    
+
+    <Style TargetType="Border" x:Key="TagBorder">
+        <Setter Property="Background" Value="#eceff1"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="4 2"/>
+    </Style>
+
 </ResourceDictionary>
