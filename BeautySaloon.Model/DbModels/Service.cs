@@ -8,13 +8,6 @@ namespace BeautySaloon.Model.DbModels
     [Table("Service")]
     public partial class Service
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Service()
-        {
-            ClientServices = new HashSet<ClientService>();
-            ServicePhotoes = new HashSet<ServicePhoto>();
-        }
-
         public int ID { get; set; }
 
         [Required]
@@ -34,9 +27,9 @@ namespace BeautySaloon.Model.DbModels
         public string MainImagePath { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ClientService> ClientServices { get; set; }
+        public List<ClientService> ClientServices { get; set; } = new();
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ServicePhoto> ServicePhotoes { get; set; }
+        public List<ServicePhoto> ServicePhotos { get; set; } = new();
     }
 }

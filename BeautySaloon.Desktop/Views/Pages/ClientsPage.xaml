@@ -107,6 +107,7 @@
                     <Button Content="➕" ToolTip="Добавить клиента" Command="{Binding AddClientCommand}"/>
                     <Button Content="✏" ToolTip="Редактировать клиента" Command="{Binding EditClientCommand}"/>
                     <Button Content="❌" ToolTip="Удалить клиента" Command="{Binding DeleteClientCommand}"/>
+                    <Button Content="Посещения" Command="{Binding ClientVisitsCommand}" Margin="10 0 0 0"/>
                 </StackPanel>
             </Grid>
         </StackPanel>
@@ -119,7 +120,7 @@
                 <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
                 <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}"/>
                 <DataGridTextColumn Header="Отчество" Binding="{Binding Patronymic}"/>
-                <DataGridTextColumn Header="Пол" Binding="{Binding Gender.Name}"/>
+                <DataGridTextColumn Header="Пол" Binding="{Binding Gender.Code}"/>
                 <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat={}{0:dd.MM.yyyy}}"/>
                 <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>

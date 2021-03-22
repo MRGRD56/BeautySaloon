@@ -1,0 +1,84 @@
+﻿<Window x:Class="BeautySaloon.Desktop.Views.Windows.ClientVisitsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BeautySaloon.Desktop.Views.Windows" xmlns:windowsviewmodels="clr-namespace:BeautySaloon.Desktop.ViewModels.WindowsViewModels"
+        mc:Ignorable="d" Style="{StaticResource WindowStyle}" WindowStartupLocation="CenterScreen"
+        Title="Посещения клиента" 
+        Height="450" Width="800"
+        MinHeight="250" MinWidth="300">
+    <d:Window.DataContext>
+        <windowsviewmodels:ClientEditWindowViewModel/>
+    </d:Window.DataContext>
+    <Window.Resources>
+        <DiscreteObjectKeyFrame x:Key="WindowDataContext" Value="{Binding}"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Client.ClientServices}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="1" Margin="3">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Margin="10 8" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Service.Title}"/>
+                                    <TextBlock Text="{Binding StartTime, StringFormat={}{0:dd.MM.yyyy HH\:mm}}" Margin="0 4"/>
+                                    <TextBlock Text="{Binding Service.ServicePhotos.Count, StringFormat=Всего файлов: {0}}"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="1" 
+                                        Width="40"
+                                        Content="▶" 
+                                        HorizontalContentAlignment="Center" 
+                                        VerticalContentAlignment="Center"
+                                        Style="{StaticResource ClientVisitButton}"
+                                        Command="{Binding Source={StaticResource WindowDataContext}, Path=Value.ShowVisitInfoCommand}"
+                                        CommandParameter="{Binding}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="8 0">
+            <StackPanel>
+                <TextBlock Text="{Binding SelectedClientService.Service.Title}" FontSize="16"/>
+                <TextBlock Text="{Binding SelectedClientService.StartTime, StringFormat=Дата и время: {0:dd.MM.yyyy HH\:mm}}"/>
+                <TextBlock Text="Прикреплённые файлы: "/>
+                <ItemsControl ItemsSource="{Binding SelectedClientService.DocumentByServices}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding Source={StaticResource WindowDataContext}, Path=Value.OpenFileCommand}"
+                                       CommandParameter="{Binding}">
+                                    <TextBlock Text="{Binding DocumentFileName}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            
+        </ScrollViewer>
+    </Grid>
+</Window>

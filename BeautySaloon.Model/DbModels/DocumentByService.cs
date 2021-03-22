@@ -4,6 +4,8 @@ namespace BeautySaloon.Model.DbModels
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.IO;
+    using System.Text.RegularExpressions;
 
     [Table("DocumentByService")]
     public partial class DocumentByService
@@ -15,6 +17,10 @@ namespace BeautySaloon.Model.DbModels
         [Required]
         [StringLength(1000)]
         public string DocumentPath { get; set; }
+
+        public string FullDocumentPath => Path.Combine("Images\\", DocumentPath);
+
+        public string DocumentFileName => Regex.Match(DocumentPath, @"[\\\/]([^\\\/]+)$").Groups[1].Value;
 
         public virtual ClientService ClientService { get; set; }
     }

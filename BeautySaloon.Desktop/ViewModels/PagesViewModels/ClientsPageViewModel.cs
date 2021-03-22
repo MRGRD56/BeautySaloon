@@ -349,6 +349,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             using (var db = new AppContext())
             {
                 var dbClient = await db.Clients.FindAsync(SelectedClient.ID);
+                db.Database.ExecuteSqlCommand($"DELETE FROM TagOfClient WHERE ClientID = {dbClient.ID}");
                 db.Clients.Remove(dbClient);
                 await db.SaveChangesAsync();
             }
@@ -356,6 +357,26 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             _clients.Remove(SelectedClient);
             UpdateData();
         }, o => SelectedClient != null);
+
+        public RelayCommand ClientVisitsCommand => new(o =>
+        {
+            var windows = App.Current.Windows.Cast<Window>().ToList();
+            var windowExists = false;
+            foreach (var window in windows)
+            {
+                if (window is ClientVisitsWindow clientVisitsWindow && clientVisitsWindow.Client.ID == SelectedClient.ID)
+                {
+                    clientVisitsWindow.Focus();
+                    windowExists = true;
+                    break;
+                }
+            }
+
+            if (!windowExists)
+            {
+                new ClientVisitsWindow(SelectedClient).Show();
+            }
+        }, o => SelectedClient != null && SelectedClient.VisitsCount > 0);
 
         public ClientsPageViewModel()
         {
@@ -416,6 +437,7 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 await db.Tags.LoadAsync();
                 await db.Services.LoadAsync();
                 await db.ClientServices.LoadAsync();
+                await db.DocumentByServices.LoadAsync();
 
                 synchronizationContext.Send(o =>
                 {
@@ -433,7 +455,11 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 OnePageItemsCount = TotalItemsCount;
                 PagesCount = 1;
 
-                await db.Clients.Include(x => x.Tags).ForEachAsync(x =>
+                await db.Clients
+                    .Include(x => x.Tags)
+                    .Include(x => x.ClientServices
+                        .Select(y => y.DocumentByServices))
+                    .ForEachAsync(x =>
                 {
                     synchronizationContext.Send(o => _clients.Add(x), null);
                 });

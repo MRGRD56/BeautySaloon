@@ -84,7 +84,7 @@ namespace BeautySaloon.Context
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Service>()
-                .HasMany(e => e.ServicePhotoes)
+                .HasMany(e => e.ServicePhotos)
                 .WithRequired(e => e.Service)
                 .WillCascadeOnDelete(false);
 
