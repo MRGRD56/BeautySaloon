@@ -189,6 +189,9 @@ namespace BeautySaloon.Model.DbModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ObservableCollection<Tag> Tags { get; set; } = new();
 
+        /// <summary>
+        /// HTML-код дл€ отображени€ тегов. ћожет быть использован в мобильном приложении.
+        /// </summary>
         public string TagsHtml
         {
             get
@@ -207,6 +210,9 @@ namespace BeautySaloon.Model.DbModels
             }
         }
 
+        /// <summary>
+        /// ѕоследн€€ услуга, оказанна€ клиенту.
+        /// </summary>
         public ClientService LastClientService
         {
             get
@@ -222,8 +228,14 @@ namespace BeautySaloon.Model.DbModels
             }
         }
 
+        /// <summary>
+        /// ƒата последнего посещени€.
+        /// </summary>
         public DateTime LastVisitDate => LastClientService?.StartTime ?? default;
 
+        /// <summary>
+        /// ƒата последнего посещени€, строка.
+        /// </summary>
         public string LastVisitDateString
         {
             get
@@ -237,8 +249,16 @@ namespace BeautySaloon.Model.DbModels
             }
         }
 
+        /// <summary>
+        ///  оличество услуг, оказанных клиенту.
+        /// </summary>
         public int VisitsCount => ClientServices.Count;
 
+        /// <summary>
+        /// ƒобавл€ет к строке "\n", если она не пуста€.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         private static string NotNullAddNewLine(string str)
         {
             if (!string.IsNullOrWhiteSpace(str))
@@ -248,18 +268,13 @@ namespace BeautySaloon.Model.DbModels
 
             return "";
         }
-
-        public string Error
-        {
-            get
-            {
-                return NotNullAddNewLine(this[nameof(LastName)])
-                     + NotNullAddNewLine(this[nameof(FirstName)])
-                     + NotNullAddNewLine(this[nameof(Patronymic)])
-                     + NotNullAddNewLine(this[nameof(Email)])
-                     + NotNullAddNewLine(this[nameof(Phone)]);
-            }
-        }
+        
+        public string Error =>
+            NotNullAddNewLine(this[nameof(LastName)])
+            + NotNullAddNewLine(this[nameof(FirstName)])
+            + NotNullAddNewLine(this[nameof(Patronymic)])
+            + NotNullAddNewLine(this[nameof(Email)])
+            + NotNullAddNewLine(this[nameof(Phone)]);
 
         public object Clone()
         {

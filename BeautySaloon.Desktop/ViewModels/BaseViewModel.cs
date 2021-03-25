@@ -14,6 +14,9 @@ namespace BeautySaloon.Desktop.ViewModels
         public void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        /// <summary>
+        /// Команда навигации назад.
+        /// </summary>
         public RelayCommand GoBackCommand => new RelayCommand(o => Navigation.GoBack());
     }
 }

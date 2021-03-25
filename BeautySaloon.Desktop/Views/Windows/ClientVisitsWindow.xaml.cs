@@ -21,6 +21,9 @@ namespace BeautySaloon.Desktop.Views.Windows
     /// </summary>
     public partial class ClientVisitsWindow : Window
     {
+        /// <summary>
+        /// Клиент, посещения которого отображаются.
+        /// </summary>
         public Client Client { get; }
 
         public ClientVisitsWindow(Client client)

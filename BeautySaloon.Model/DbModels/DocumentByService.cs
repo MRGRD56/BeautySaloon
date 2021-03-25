@@ -20,7 +20,10 @@ namespace BeautySaloon.Model.DbModels
 
         public string FullDocumentPath => Path.Combine("Images\\", DocumentPath);
 
-        public string DocumentFileName => Regex.Match(DocumentPath, @"[\\\/]([^\\\/]+)$").Groups[1].Value;
+        /// <summary>
+        /// Имя файла без пути к нему.
+        /// </summary>
+        public string DocumentFileName => Regex.Match(DocumentPath, @"[\\\/]?([^\\\/]+)$").Groups[1].Value;
 
         public virtual ClientService ClientService { get; set; }
     }
