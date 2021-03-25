@@ -22,14 +22,25 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
         private bool _isMale;
         private bool _isFemale;
 
+        /// <summary>
+        /// Определяет, редактируется ли клиент. Если нет, значит, добавляется новый.
+        /// </summary>
         public bool IsEditMode { get; set; }
 
+        /// <summary>
+        /// Добавляемый/редактируемый клиент.
+        /// </summary>
         public Client EditingClient { get; set; }
 
+        /// <summary>
+        /// Определяет, нужно ли сохранить пользователя.<br/>
+        /// Равен true, если пользователь нажал 'Готово' в окне добавления/редактирования клиента.<br/>
+        /// Иначе, если пользователь нажал 'Отмена' или закрыл окно, равен false.
+        /// </summary>
         public bool Result { get; set; }
 
         /// <summary>
-        /// Теги, которые можно добавить клиенту.
+        /// Теги, которые можно добавить клиенту. Это все теги в БД, исключая теги из коллекции <see cref="ClientTags"/>.
         /// </summary>
         public ObservableCollection<Tag> AvailableTags { get; set; } = new();
 
@@ -38,6 +49,9 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
         /// </summary>
         public ObservableCollection<Tag> ClientTags { get; set; } = new();
 
+        /// <summary>
+        /// Команда загрузки фотографии клиента.
+        /// </summary>
         public RelayCommand LoadPhotoCommand => new(o =>
         {
             var openFileDialog = new OpenFileDialog();
@@ -47,27 +61,38 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
             {
                 var fileName = openFileDialog.FileName;
                 var fileInfo = new FileInfo(fileName);
-                if (fileInfo.Length > 1024 * 1024)
+                if (fileInfo.Length > 2 * 1024 * 1024)
                 {
                     MBox.ShowError("Размер изображения не должен превышать 2 МБ");
                     return;
                 }
 
+                //Имя загружаемого файла.
                 var fileShortName = fileInfo.Name;
+                //Относительный путь, куда будет скопировано изображение.
                 var newFilePath = Path.Combine("Клиенты\\", fileShortName);
+                //Абсолютный путь, куда будет скопировано изображение.
                 var newFileAbsolutePath = Path.Combine(Directory.GetCurrentDirectory(), "Images\\", newFilePath);
+                //Копирование файла в newFileAbsolutePath с перезаписью.
                 File.Copy(fileName, newFileAbsolutePath, true);
                 EditingClient.PhotoPath = newFilePath;
                 OnPropertyChanged(nameof(IsPhotoLoaded));
             }
         });
 
+        /// <summary>
+        /// Определяет, имеет ли клиент фотографию.
+        /// </summary>
         public bool IsPhotoLoaded => !string.IsNullOrWhiteSpace(EditingClient.PhotoPath);
 
+        /// <summary>
+        /// Команда ОК.
+        /// </summary>
         public RelayCommand OkCommand => new(o =>
         {
             var window = (ClientEditWindow)o;
 
+            //Проверка введённых данных.
             if (string.IsNullOrWhiteSpace(EditingClient.LastName) ||
                 string.IsNullOrWhiteSpace(EditingClient.FirstName) ||
                 string.IsNullOrWhiteSpace(EditingClient.Patronymic) ||
@@ -94,10 +119,14 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
                 : db.Genders.Find("ж");
 
             Result = true;
+            //Задаёт клиенту пол из БД.
             EditingClient.Gender = gender;
             window.Close();
         });
 
+        /// <summary>
+        /// Команда отмены. Закрывает окно добавления/редактирования клиента.
+        /// </summary>
         public RelayCommand CancelCommand => new(o =>
         {
             var window = (ClientEditWindow)o;
@@ -105,6 +134,9 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
             window.Close();
         });
 
+        /// <summary>
+        /// Определяет, отмечен ли мужской пол.
+        /// </summary>
         public bool IsMale
         {
             get => _isMale;
@@ -115,6 +147,9 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
             }
         }
 
+        /// <summary>
+        /// Определяет, отмечен ли женский пол.
+        /// </summary>
         public bool IsFemale
         {
             get => _isFemale;
@@ -124,7 +159,7 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public ClientEditWindowViewModel()
         {
             EditingClient = new Client();
@@ -141,6 +176,10 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
             InitializeTags(true);
         }
 
+        /// <summary>
+        /// Заполняет коллекции <see cref="AvailableTags"/> и <see cref="ClientTags"/>.
+        /// </summary>
+        /// <param name="isEditMode"></param>
         private async void InitializeTags(bool isEditMode)
         {
             var synchronizationContext = SynchronizationContext.Current;
@@ -149,18 +188,24 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
             {
                 synchronizationContext.Send(o => 
                 {
+                    //Если режим добавления или редактируемый клиент не имеет тега tag.
                     if (!isEditMode || EditingClient.Tags.All(x => x.ID != tag.ID))
                     {
+                        //Добавляем tag в доступные теги.
                         AvailableTags.Add(tag);
                     }
                     else
                     {
+                        //В противном случае, добавляем в теги клиента.
                         ClientTags.Add(tag);
                     }
                 }, null);
             });
         }
 
+        /// <summary>
+        /// Команда добавления тега. Тег переходит из коллекции <see cref="AvailableTags"/> в коллекцию <see cref="ClientTags"/>.
+        /// </summary>
         public RelayCommand AddTagCommand => new(o =>
         {
             var tag = (Tag) o;
@@ -168,6 +213,9 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
             AvailableTags.Remove(tag);
         });
 
+        /// <summary>
+        /// Команда удаления тега. Тег переходит из коллекции <see cref="ClientTags"/> в коллекцию <see cref="AvailableTags"/>.
+        /// </summary>
         public RelayCommand RemoveTagCommand => new(o =>
         {
             var tag = (Tag) o;

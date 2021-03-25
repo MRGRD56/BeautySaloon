@@ -28,6 +28,11 @@ namespace BeautySaloon.Desktop.Views.Windows
             Navigation.Navigate(new MainMenuPage());
         }
 
+        /// <summary>
+        /// Событие, вызываемое после навигации <see cref="Frame"/>.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
             if (e.Content is Page page)
@@ -41,6 +46,11 @@ namespace BeautySaloon.Desktop.Views.Windows
             }
         }
 
+        /// <summary>
+        /// Переходит на страницу главного меню.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainMenuButton_Click(object sender, RoutedEventArgs e)
         {
             Navigation.Navigate(new MainMenuPage());

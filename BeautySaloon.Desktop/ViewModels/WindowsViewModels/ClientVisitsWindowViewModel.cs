@@ -11,8 +11,14 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
     {
         private ClientService _selectedClientService;
 
+        /// <summary>
+        /// Клиент, посещения которого отображаются.
+        /// </summary>
         public Client Client { get; }
 
+        /// <summary>
+        /// Выбранное посещение клиента.
+        /// </summary>
         public ClientService SelectedClientService
         {
             get => _selectedClientService;
@@ -29,12 +35,18 @@ namespace BeautySaloon.Desktop.ViewModels.WindowsViewModels
             SelectedClientService = client.ClientServices.FirstOrDefault();
         }
 
+        /// <summary>
+        /// Команда показа информации о выбранном посещении.
+        /// </summary>
         public RelayCommand ShowVisitInfoCommand => new(o =>
         {
             var clientService = (ClientService) o;
             SelectedClientService = clientService;
         });
 
+        /// <summary>
+        /// Команда открытия файла <see cref="DocumentByService"/>.
+        /// </summary>
         public RelayCommand OpenFileCommand => new(o =>
         {
             var document = (DocumentByService) o;

@@ -24,10 +24,21 @@ namespace BeautySaloon.Desktop.Views.Windows
     {
         private ClientEditWindowViewModel ViewModel => (ClientEditWindowViewModel) DataContext;
 
+        /// <summary>
+        /// Добавляемый/редактируемый клиент.
+        /// </summary>
         public Client Client => ViewModel.EditingClient;
 
+        /// <summary>
+        /// Теги добавляемого/редактируемого клиента.
+        /// </summary>
         public ObservableCollection<Tag> ClientTags => ViewModel.ClientTags;
 
+        /// <summary>
+        /// Определяет, нужно ли сохранить пользователя.<br/>
+        /// Равен true, если пользователь нажал 'Готово' в окне добавления/редактирования клиента.<br/>
+        /// Иначе, если пользователь нажал 'Отмена' или закрыл окно, равен false.
+        /// </summary>
         public bool Result => ViewModel.Result;
 
         /// <summary>

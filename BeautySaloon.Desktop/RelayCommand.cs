@@ -7,10 +7,13 @@ using System.Windows.Input;
 
 namespace BeautySaloon.Desktop
 {
+    /// <summary>
+    /// Определяет команду.
+    /// </summary>
     public class RelayCommand : ICommand
     {
         private readonly Action<object> _execute;
-        private readonly Func<object, bool> _canExecute;
+        private readonly Predicate<object> _canExecute;
 
         public event EventHandler CanExecuteChanged
         {
@@ -22,7 +25,12 @@ namespace BeautySaloon.Desktop
 
         public void Execute(object parameter) => _execute?.Invoke(parameter);
 
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        /// <summary>
+        /// Определяет команду.
+        /// </summary>
+        /// <param name="execute">Делегат, определяющий выполняемое действие.</param>
+        /// <param name="canExecute">Предикат, опеределяющий, должно ли выполняться <paramref name="execute"/>.</param>
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;

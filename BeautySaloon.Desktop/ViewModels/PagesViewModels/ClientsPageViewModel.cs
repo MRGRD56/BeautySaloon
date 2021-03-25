@@ -24,7 +24,10 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
 {
     public class ClientsPageViewModel : BaseViewModel
     {
-        public RelayCommand ChangeSortCommand => new RelayCommand(o =>
+        /// <summary>
+        /// Команда изменения критерия сортировки клиентов.
+        /// </summary>
+        public RelayCommand ChangeSortCommand => new(o =>
         {
             var button = (Button)o;
             var tag = button.Tag;
@@ -57,19 +60,28 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             UpdateData();
         });
 
-        public RelayCommand PreviousPageCommand => new RelayCommand(o =>
+        /// <summary>
+        /// Команда перехода на предыдущую страницу.
+        /// </summary>
+        public RelayCommand PreviousPageCommand => new(o =>
         {
             CurrentPage--;
             UpdateData();
         }, o => CurrentPage > 1);
 
-        public RelayCommand NextPageCommand => new RelayCommand(o =>
+        /// <summary>
+        /// Команда перехода на следующую страницу.
+        /// </summary>
+        public RelayCommand NextPageCommand => new(o =>
         {
             CurrentPage++;
             UpdateData();
         }, o => CurrentPage < PagesCount);
 
-        public RelayCommand ChangeOnePageItemsCount => new RelayCommand(o =>
+        /// <summary>
+        /// Команда изменения количества записей на одной странице.
+        /// </summary>
+        public RelayCommand ChangeOnePageItemsCount => new(o =>
         {
             var button = (Button)o;
             var buttonContent = button.Content.ToString();
@@ -93,12 +105,18 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             UpdateData();
         });
 
-        public List<string> BirthdayFilters { get; set; } = new List<string>
+        /// <summary>
+        /// Критерии фильтрации по дате рождения.
+        /// </summary>
+        public List<string> BirthdayFilters { get; set; } = new()
         {
             "Все",
             "В текущем месяце"
         };
 
+        /// <summary>
+        /// Индекс выбранного критерия фильтрации по дате рождения.
+        /// </summary>
         public int SelectedBirthdayFilterIndex
         {
             get => _selectedBirthdayFilterIndex; 
@@ -109,8 +127,15 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 UpdateData();
             }
         }
+
+        /// <summary>
+        /// Индекс первого элемента на текущей странице.
+        /// </summary>
         private int CurrentPageFirstItemIndex => (CurrentPage - 1) * OnePageItemsCount;
 
+        /// <summary>
+        /// Номер текущей страницы (начиная с 1).
+        /// </summary>
         public int CurrentPage
         {
             get => _currentPage;
@@ -121,6 +146,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Количество страниц.
+        /// </summary>
         public int PagesCount
         {
             get => _pagesCount;
@@ -131,6 +159,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Количество элементов на одной странице.
+        /// </summary>
         public int OnePageItemsCount
         {
             get => _onePageItemsCount;
@@ -141,6 +172,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Определяет, отображать ли все записи.
+        /// </summary>
         public bool ShowAllItems
         {
             get => _showAllItems;
@@ -151,6 +185,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Количество отображаемых записей на текущей странице, учитывая фильтрацию.
+        /// </summary>
         public int ShownItemsCount
         {
             get => _shownItemsCount;
@@ -161,6 +198,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Общее количество клиентов в БД.
+        /// </summary>
         public int TotalItemsCount
         {
             get => _totalItemsCount;
@@ -171,17 +211,25 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
-
-        private readonly Gender _allGendersGender = new Gender
+        /// <summary>
+        /// Объект, обозначающий оба пола.
+        /// </summary>
+        private readonly Gender _allGendersGender = new()
         {
             Code = "All",
             Name = "Все"
         };
+        
+        public List<Gender> Genders { get; set; } = new();
 
-        public List<Gender> Genders { get; set; } = new List<Gender>();
+        /// <summary>
+        /// Все клиенты.
+        /// </summary>
+        private readonly ObservableCollection<Client> _clients = new();
 
-        private readonly ObservableCollection<Client> _clients = new ObservableCollection<Client>();
-
+        /// <summary>
+        /// Отображаемые клиенты.
+        /// </summary>
         public ICollectionView ClientsView { get; set; }
 
         private string _fullNameSearchQuery;
@@ -199,6 +247,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
         private FontWeight _visitsCountButtonFontWeight = FontWeights.Normal;
         private int _selectedBirthdayFilterIndex = 0;
 
+        /// <summary>
+        /// Поисковый запрос по ФИО.
+        /// </summary>
         public string FullNameSearchQuery
         {
             get => _fullNameSearchQuery;
@@ -210,6 +261,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Поисковый запрос по Email.
+        /// </summary>
         public string EmailSearchQuery
         {
             get => _emailSearchQuery;
@@ -221,6 +275,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Поисковый запрос по номеру телефона.
+        /// </summary>
         public string PhoneSearchQuery
         {
             get => _phoneSearchQuery;
@@ -232,6 +289,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Поисковый запрос по полу.
+        /// </summary>
         public Gender GenderSearchQuery
         {
             get => _genderSearchQuery;
@@ -243,7 +303,10 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
-        public RelayCommand ResetFilterCommand => new RelayCommand(o =>
+        /// <summary>
+        /// Команда сброса всех фильтров.
+        /// </summary>
+        public RelayCommand ResetFilterCommand => new(o =>
         {
             FullNameSearchQuery = "";
             EmailSearchQuery = "";
@@ -251,12 +314,18 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             GenderSearchQuery = _allGendersGender;
         });
 
+        /// <summary>
+        /// Обновляет отображаемые записи в соответствии с фильтрами и номером текущей страницы.
+        /// </summary>
         private void UpdateData()
         {
             ClientsView.Refresh();
             ShownItemsCount = ClientsView.Cast<Client>().Count();
         }
 
+        /// <summary>
+        /// Толщина шрифта для кнопки сортировки по фамилии.
+        /// </summary>
         public FontWeight LastNameButtonFontWeight
         {
             get => _lastNameButtonFontWeight;
@@ -266,6 +335,10 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 OnPropertyChanged();
             }
         }
+
+        /// <summary>
+        /// Толщина шрифта для кнопки сортировки по последнему посещению.
+        /// </summary>
         public FontWeight LastVisitButtonFontWeight
         {
             get => _lastVisitButtonFontWeight;
@@ -275,6 +348,10 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                 OnPropertyChanged();
             }
         }
+
+        /// <summary>
+        /// Толщина шрифта для кнопки сортировки по количеству посещений.
+        /// </summary>
         public FontWeight VisitsCountButtonFontWeight
         {
             get => _visitsCountButtonFontWeight;
@@ -285,6 +362,11 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             }
         }
 
+        /// <summary>
+        /// Определяет, соответствует ли клиент поисковому запросу.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         private bool GetClientSearchMatch(Client client)
         {
             var fullNameMatch = client.FullName.IsMatch(FullNameSearchQuery);
@@ -299,8 +381,14 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             return fullNameMatch && emailMatch && phoneMatch && genderMatch && birthdayMatch;
         }
 
+        /// <summary>
+        /// Выбранный клиент.
+        /// </summary>
         public Client SelectedClient { get; set; }
 
+        /// <summary>
+        /// Команда добавления нового клиента.
+        /// </summary>
         public RelayCommand AddClientCommand => new(o =>
         {
             var db = new AppContext();
@@ -317,6 +405,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             _clients.Add(dialogClient);
         });
 
+        /// <summary>
+        /// Команда редактирования выбранного клиента.
+        /// </summary>
         public RelayCommand EditClientCommand => new(o =>
         {
             var db = new AppContext();
@@ -335,7 +426,10 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             SelectedClient.SetTagsNoDb(clientEditDialog.ClientTags);
         }, o => SelectedClient != null);
 
-        public RelayCommand DeleteClientCommand => new RelayCommand(async o =>
+        /// <summary>
+        /// Команда удаления выбранного клиента.
+        /// </summary>
+        public RelayCommand DeleteClientCommand => new(async o =>
         {
             if (SelectedClient.VisitsCount > 0)
             {
@@ -358,6 +452,9 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
             UpdateData();
         }, o => SelectedClient != null);
 
+        /// <summary>
+        /// Команда просмотра посещений выбранного клиента.
+        /// </summary>
         public RelayCommand ClientVisitsCommand => new(o =>
         {
             var windows = App.Current.Windows.Cast<Window>().ToList();
@@ -387,12 +484,19 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
 
                 var searchMatch = GetClientSearchMatch(client);
 
-                //TODO переписать
-                var shownClients = _clients.Where(x => GetClientSearchMatch(x)).ToList();
+                //TODO: Переписать.
+                //Более удачный пример фильтрации с постраничным отображением: 
+                //https://github.com/MRGRD56/DataFilteringWithPages
 
+                //Клиенты, соответствующие поисковому запросу.
+                var shownClients = _clients.Where(GetClientSearchMatch).ToList();
+
+                //Отсортированные записи.
                 List<Client> shownClientsOrdered;
                 var sortDescription = ClientsView.SortDescriptions.FirstOrDefault();
+                //Имя свойства, по которому происходит сортировка.
                 var propertyName = sortDescription.PropertyName;
+                //Определение, как сортировать записи.
                 if (propertyName != null)
                 {
                     shownClientsOrdered = propertyName switch
@@ -408,21 +512,28 @@ namespace BeautySaloon.Desktop.ViewModels.PagesViewModels
                     shownClientsOrdered = shownClients.ToList();
                 }
 
+                //Клиент из списка shownClients.
                 var listClient = shownClients.FirstOrDefault(x => x.ID == client.ID);
-                bool indexMatch = false;
+                //Определяет, нужно ли отображать запись на текущей странице.
+                var indexMatch = false;
                 if (listClient != null)
                 {
                     var index = shownClientsOrdered.IndexOf(listClient);
+                    //Если запись находится между первой и последней записью НА СТРАНИЦЕ (включительно), её нужно отображать.
                     indexMatch = index >= CurrentPageFirstItemIndex && index < CurrentPageFirstItemIndex + OnePageItemsCount;
                 }
 
                 return searchMatch && indexMatch;
             };
+            //Задаём сортировку по фамилии.
             ClientsView.SortDescriptions.Add(new SortDescription("LastName", ListSortDirection.Ascending));
 
             LoadData();
         }
 
+        /// <summary>
+        /// Загружает данные из БД.
+        /// </summary>
         private async void LoadData()
         {
             var synchronizationContext = SynchronizationContext.Current;
